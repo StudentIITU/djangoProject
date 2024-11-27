@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ dealer.name }} - Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>{{ dealer.name }}</h2>
+        </div>
+        <div class="card-body">
+            <h5>Location</h5>
+            <p>{{ dealer.address }}<br>
+            {{ dealer.location.city }}, {{ dealer.location.state }}</p>
+
+            <h5 class="mt-4">Reviews</h5>
+            {% if dealer.reviews %}
+                {% for review in dealer.reviews %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h6>{{ review.user }}</h6>
+                                <span class="text-muted">Rating: {{ review.rating }}/5</span>
+                            </div>
+                            <p class="card-text">{{ review.comment }}</p>
+                            <small class="text-muted">{{ review.date }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No reviews yet.</p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_review' dealer_id=dealer.id %}" class="btn btn-primary mt-3">Add Review</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
